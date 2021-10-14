@@ -1,5 +1,6 @@
 package com.jaggadavid.lab06;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,18 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class MainFragment extends Fragment {
     ViewPager2 viewPager2;
+
+
     int position;
+    int pointer = 0;
+
     public static Fragment newInstance(ViewPager2 viewPager2, int pos) {
+
         MainFragment fragment = new MainFragment();
         fragment.viewPager2 = viewPager2;
         fragment.position = pos;
@@ -27,6 +36,7 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -38,7 +48,7 @@ public class MainFragment extends Fragment {
                 (tab, position) -> tab.setText("I am  " + (position + 1))
         ).attach();
         Button mButton  = view.findViewById(R.id.pressme);
-        mButton.setText("Press Me: "+position);
+
     }
 }
 
