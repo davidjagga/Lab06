@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,13 +25,17 @@ public class MainActivity extends AppCompatActivity {
     ViewPager2 viewPager2;
     ArrayList<Integer> soundArray = new ArrayList<>();
     RecyclerView.Adapter fragmentSateAdapter;
-
+    TypedArray arrayOfQuotes;
+    int quoteNum = 0;
     int NUM_ITEM=6;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TypedArray arrayOfQuotes = getResources().obtainTypedArray(R.array.quotes);
+        Log.i("Button", (arrayOfQuotes.getResourceId(10, -1)+"")+"got click");
 
-
+        quoteNum = 0;
         soundArray.addAll(Arrays.asList(R.raw.scream, R.raw.whoosh, R.raw.chewbaka, R.raw.next, R.raw.flip, R.raw.r2d2, R.raw.swipe));
+
         int random_int = (int)Math.floor(Math.random()*(soundArray.size()));
         mediaPlayer = MediaPlayer.create(getApplicationContext(), soundArray.get(random_int));
         mediaPlayer.setVolume(1,1);
@@ -55,8 +61,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void playQuote(View view) {
-        Log.i("Button", "got click");
-        mediaPlayer.start();
+        TypedArray arrayOfQuotes = getResources().obtainTypedArray(R.array.quotes);
+        Log.i("Button", (arrayOfQuotes.getResourceId(10, -1)+"")+"got click");
+        //mediaPlayer.start();
+
+        ((Button) view).setText(arrayOfQuotes.getResourceId(quoteNum, -1)+"");
+        quoteNum = (quoteNum == 103) ? 0 : quoteNum+1;
     }
 
     private class MyFragmentStateAdapter extends FragmentStateAdapter {
@@ -87,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("soundPlayed", "hello");
             int random_int = (int)Math.floor(Math.random()*(soundArray.size()));
             mediaPlayer = MediaPlayer.create(getApplicationContext(), soundArray.get(random_int));
+            mediaPlayer.start();
 
             page.setTranslationX(-position * page.getWidth());
             page.setCameraDistance(12000);
