@@ -1,7 +1,10 @@
 package com.jaggadavid.lab06;
 
+import android.annotation.SuppressLint;
+import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +51,20 @@ public class MainFragment extends Fragment {
                 (tab, position) -> tab.setText("I am  " + (position + 1))
         ).attach();
         Button mButton  = view.findViewById(R.id.pressme);
+        playQuote(mButton);
 
     }
+
+    @SuppressLint("SetTextI18n")
+    public void playQuote(View view) {
+        TypedArray arrayOfQuotes = getResources().obtainTypedArray(R.array.quotes);
+        //Log.i("Button", (arrayOfQuotes.getResourceId(10, -1)+"")+"got click");
+        //mediaPlayer.start();
+
+        int random_int = (int)Math.floor(Math.random()*(arrayOfQuotes.length()));
+        ((Button) view).setText(arrayOfQuotes.getString(random_int)+"");
+
+    }
+
 }
 

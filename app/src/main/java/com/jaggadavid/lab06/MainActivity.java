@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -60,12 +61,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    @SuppressLint("SetTextI18n")
     public void playQuote(View view) {
         TypedArray arrayOfQuotes = getResources().obtainTypedArray(R.array.quotes);
         Log.i("Button", (arrayOfQuotes.getResourceId(10, -1)+"")+"got click");
         //mediaPlayer.start();
 
-        ((Button) view).setText(arrayOfQuotes.getResourceId(quoteNum, -1)+"");
+        ((Button) view).setText(arrayOfQuotes.getString(quoteNum)+"");
         quoteNum = (quoteNum == 103) ? 0 : quoteNum+1;
     }
 
@@ -93,11 +95,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void transformPage(@NonNull View page, float position) {
-
+            mediaPlayer.release();
             Log.i("soundPlayed", "hello");
             int random_int = (int)Math.floor(Math.random()*(soundArray.size()));
             mediaPlayer = MediaPlayer.create(getApplicationContext(), soundArray.get(random_int));
             mediaPlayer.start();
+
 
             page.setTranslationX(-position * page.getWidth());
             page.setCameraDistance(12000);
